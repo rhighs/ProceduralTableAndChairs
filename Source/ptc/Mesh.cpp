@@ -60,14 +60,18 @@ static TArray<int32> StripFromNGonCouple(const TArrayView<int32>& topNGonIds, co
 
 void Mesh::Allocate(int32 nVertices, int32 nTriangles)
 {
-	int32 nTriangleIds = nTriangles * 3 + Triangles.Num();
-    nVertices += Vertices.Num();
+	int32 nTriangleIds = nTriangles * 3;
 
 	Vertices.Reserve(nVertices);
 	UVs.Reserve(nVertices);
 	Normals.Reserve(nVertices);
 	Tangents.Reserve(nVertices);
 	Triangles.Reserve(nTriangleIds);
+}
+
+void Mesh::AllocateBack(int32 nVertices, int32 nTriangles)
+{
+    Allocate(nVertices + Vertices.Num(), nTriangles + Triangles.Num() / 3);
 }
 
 void Mesh::Reset()

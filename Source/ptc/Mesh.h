@@ -13,11 +13,17 @@ struct Mesh
 
 	Mesh() = default;
 
-	/** Allocate the underlying memory of the TArrays
+	/** Ensure this mesh has enough memory allocated for the passed params
 	* \param nVertices number of vertices
 	* \param nTriangles number of triangles (not to think as "the number of ids")
 	*/
 	void Allocate(int32 nVertices, int32 nTriangles);
+
+	/** Ensure this mesh has enough memory allocated for the passed params + the currently present elements
+	* \param nVertices number of vertices
+	* \param nTriangles number of triangles (not to think as "the number of ids")
+	*/
+    void AllocateBack(int32 nVertices, int32 nTriangles);
 
 	/** Deallocate all buffers
 	*/
