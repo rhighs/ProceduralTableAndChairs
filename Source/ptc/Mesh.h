@@ -75,7 +75,7 @@ void SphereMesh(Mesh& mesh, float radius, int32 parallels, int32 meridians);
 void SphereMesh(Mesh& mesh, float radius, int32 parallels, int32 meridians, const FVector& sphereOrigin);
 
 /** Add a 2D rectanle to a given mesh
-* \param mesh mutable reference to a Mesh where the rectangel will be added
+* \param mesh mutable reference to a Mesh where the rectangle will be added
 * \param bottomLeft vertex position
 * \param bottomLeft vertex position
 * \param topRight vertex position
