@@ -4,7 +4,8 @@
 UPTCComponent::UPTCComponent(const FObjectInitializer& objectInitializer)
     : UProceduralMeshComponent(objectInitializer)
 {
-    bUseAsyncCooking = true;
+    bUseComplexAsSimpleCollision = true;
+	bUseAsyncCooking = true;
 }
 
 void UPTCComponent::Build(const FVector& tableSize, const FVector& chairSize)

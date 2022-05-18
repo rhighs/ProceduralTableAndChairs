@@ -2,17 +2,17 @@
 
 ATableAndChairs::ATableAndChairs()
 {
+    SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;
+
     _proceduralTableAndChairs = CreateDefaultSubobject<UPTCComponent>("ProceduralTableAndChairs");
     RootComponent = _proceduralTableAndChairs;
 
     _cornerBoxComponents.Reserve(4);
     for (int i = 0; i < 4; ++i)
     {
-
         FString j = "Corner " + FString::FromInt(i+1);
         _cornerBoxComponents.Add(CreateDefaultSubobject<UBoxComponent>(FName(*j)));
-
         _cornerBoxComponents[i]->SetupAttachment(_proceduralTableAndChairs);
     }
 }
@@ -73,6 +73,8 @@ void ATableAndChairs::Update()
 
 void ATableAndChairs::Resize(const FString& targetComponent, const FVector& cursorPosition)
 {
+    UE_LOG(LogTemp, Warning, TEXT("Resizing actor"));
+
     auto tableLocation = GetActorLocation();
     FVector2D newSize = 2 * (FVector2D(cursorPosition.X, cursorPosition.Y) - FVector2D(tableLocation.X, tableLocation.Y)).GetAbs();
     auto currentSize = FVector2D(TableWidth, TableLength);
