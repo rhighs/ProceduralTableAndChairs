@@ -8,5 +8,7 @@ UCLASS()
 class PTC_API AptcGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+    AptcGameModeBase();
 	
 };

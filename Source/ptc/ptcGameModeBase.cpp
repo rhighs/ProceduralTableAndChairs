@@ -1,5 +1,8 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-
 #include "ptcGameModeBase.h"
 
+#include "PTCPlayerController.h"
+
+AptcGameModeBase::AptcGameModeBase()
+{
+	PlayerControllerClass = APTCPlayerController::StaticClass();
+}
