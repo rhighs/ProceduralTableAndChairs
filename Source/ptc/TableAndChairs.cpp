@@ -6,15 +6,14 @@ ATableAndChairs::ATableAndChairs()
     _proceduralTableAndChairs = CreateDefaultSubobject<UPTCComponent>("ProceduralTableAndChairs");
     RootComponent = _proceduralTableAndChairs;
 
-    _cornerSphereComponents.Reserve(4);
+    _cornerBoxComponents.Reserve(4);
     for (int i = 0; i < 4; ++i)
     {
 
         FString j = "Corner " + FString::FromInt(i+1);
-        _cornerSphereComponents.Add(CreateDefaultSubobject<USphereComponent>(FName(*j)));
+        _cornerBoxComponents.Add(CreateDefaultSubobject<UBoxComponent>(FName(*j)));
 
-        _cornerSphereComponents[i]->SetupAttachment(_proceduralTableAndChairs);
-        //_cornerSphereComponents[i]->SetSphereRadius(200);
+        _cornerBoxComponents[i]->SetupAttachment(_proceduralTableAndChairs);
     }
 }
 
@@ -33,9 +32,9 @@ void ATableAndChairs::OnConstruction(const FTransform& transform)
 
     _putCornerHitboxesInPlace();
 
-    for (auto& corner : _cornerSphereComponents)
+    for (auto& corner : _cornerBoxComponents)
     {
-        corner->SetSphereRadius(30);
+        corner->SetBoxExtent(FVector(30,30,30), false);
         corner->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
     }
 
@@ -55,7 +54,8 @@ void ATableAndChairs::PostEditChangeProperty(FPropertyChangedEvent& event)
 
     if (anyPropChanged)
     {
-        Resize(FVector(TableWidth, TableLength, TableHeight));
+        Update();
+        _putCornerHitboxesInPlace();
     }
 
     Super::PostEditChangeProperty(event);
@@ -71,15 +71,20 @@ void ATableAndChairs::Update()
     );
 }
 
-FVector ATableAndChairs::GetResizableLocation()
+void ATableAndChairs::Resize(const FString& targetComponent, const FVector& cursorPosition)
 {
-    FVector location = GetActorLocation();
-    return location;
-}
-
-void ATableAndChairs::Resize(const FVector& newSize)
-{
-    SetSize(newSize);
+    auto tableLocation = GetActorLocation();
+    FVector2D newSize = 2 * (FVector2D(cursorPosition.X, cursorPosition.Y) - FVector2D(tableLocation.X, tableLocation.Y)).GetAbs();
+    auto currentSize = FVector2D(TableWidth, TableLength);
+    auto sizeDiff = newSize - currentSize;
+    auto threshold = 5;
+    if (sizeDiff.Size() < threshold)
+        return;
+    if (newSize.X < 100 || newSize.X > 100000)
+        return;
+    if (newSize.Y < 100 || newSize.Y > 100000)
+        return;
+    SetSize(FVector{ newSize, TableHeight });
     TableWidth = newSize.X;
     TableLength = newSize.Y;
     Update();
@@ -98,17 +103,17 @@ void ATableAndChairs::_putCornerHitboxesInPlace()
                                      FVector(-1, -1, 1),
                                      FVector(1, -1, 1) };
 
-    if (_cornerSphereComponents.Num() != quadrantsSigns.Num())
+    if (_cornerBoxComponents.Num() != quadrantsSigns.Num())
     {
         UE_LOG(LogTemp, Warning, TEXT("corner hitboxes can't be positioned"));
         return;
     }
 
     int32 id = 0;
-    for (auto& corner : _cornerSphereComponents)
+    for (auto& corner : _cornerBoxComponents)
     {
-        FVector sphereLocation = FVector(TableWidth / 2, TableLength / 2, TableHeight) * quadrantsSigns[id];
-        corner->SetRelativeLocation(sphereLocation);
+        FVector boxLocation = FVector(TableWidth / 2 - 28, TableLength / 2 - 28, TableHeight - 28) * quadrantsSigns[id];
+        corner->SetRelativeLocation(boxLocation);
 
         ++id;
     }

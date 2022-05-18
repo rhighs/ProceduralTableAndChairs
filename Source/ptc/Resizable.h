@@ -20,7 +20,6 @@ class PTC_API IResizable
 public:
 	virtual const FVector& GetSize();
 	virtual void SetSize(const FVector& size);
-	virtual FVector GetResizableLocation() PURE_VIRTUAL(IResizable::GetResizableLocation, return FVector(););
 	virtual void Resize(const FVector& newSize) PURE_VIRTUAL(IResizable::Resize, return;);
 	virtual void Resize(float newX, float newY) PURE_VIRTUAL(IResizable::Resize, return;);
 	virtual void Resize(const FString& targetComponent, const FVector& upToPoint) PURE_VIRTUAL(IResizable::Resize, return;)

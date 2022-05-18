@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 #include "PTCComponent.h"
 #include "Resizable.h"
 #include "TableAndChairs.generated.h"
@@ -16,7 +16,7 @@ class PTC_API ATableAndChairs : public AActor, public IResizable
     UPTCComponent* _proceduralTableAndChairs;
 
     UPROPERTY(VisibleAnywhere, Category = "Collision")
-    TArray<USphereComponent*> _cornerSphereComponents;
+    TArray<UBoxComponent*> _cornerBoxComponents;
 
     bool _firstRender = true;
 	
@@ -43,8 +43,7 @@ public:
 
     void Update();
 
-    virtual FVector GetResizableLocation() override;
-    virtual void Resize(const FVector& newSize) override;
+    virtual void Resize(const FString& targetComponent, const FVector& upToPoint) override;
 protected:
 	virtual void BeginPlay() override;
     virtual void OnConstruction(const FTransform& transform) override;

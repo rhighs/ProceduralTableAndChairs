@@ -40,14 +40,8 @@ void APTCPlayerController::PlayerTick(float DeltaTime)
 	FVector2D cursorCoordInZPlane = _whereLineIntersectsZPlane(zPlane, location, direction);
 	if (_resizableActor != nullptr)
 	{
-		auto tableLocation = _resizableActor->GetResizableLocation();
-		FVector2D newSize = 2 * (cursorCoordInZPlane - FVector2D(tableLocation.X, tableLocation.Y)).GetAbs();
-		//auto currentSize = FVector2D(_resizableActor->GetSize().X, _resizableActor->GetSize().Y);
-		//auto sizeDiff = newSize - currentSize;
-		_resizableActor->Resize(FVector(newSize, _resizableActor->GetSize().Z));
-
-		//FVector cursorWorldPosition = FVector(cursorCoordInZPlane, zPlane);
-		//_resizableActor->Resize(_hitComponent, cursorWorldPosition);
+		FVector cursorWorldPosition = FVector(cursorCoordInZPlane, zPlane);
+		_resizableActor->Resize(_hitComponent, cursorWorldPosition);
 	}
 
 }
@@ -100,7 +94,7 @@ void APTCPlayerController::_mouseLeftButtonPressed()
 		return;
 	}
 
-	auto hitComponent = Cast<USceneComponent>(hitResult.Component);
+	auto hitComponent = Cast<UActorComponent>(hitResult.Component);
 	if (!hitComponent) {
 		PrintDebugMessage("component not found");
 		return;
