@@ -33,15 +33,9 @@ struct Mesh
 	*/
 	void Reset();
 
-	/** Increment each vertex in `Vertices` by a given offset
-	* \param offset vector to consider as offset
-	*/
-	void Translate(const FVector& offset);
-
-	/** Rotate each vertex in `Vertices` by a given triplet of angles (in deg)
-	* \param the vector to consider as triplet of angles
-	*/
-	void Rotate(const FVector& rotationDegrees);
+    /** Apply a transformation (translation, rotation and scaling) to each vertex
+    */
+    void Transform(const FTransform& transform);
 };
 
 /** Generate a cubic mesh given a size with origin (0, 0, 0)

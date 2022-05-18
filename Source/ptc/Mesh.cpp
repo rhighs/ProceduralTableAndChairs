@@ -92,19 +92,12 @@ void Mesh::Empty()
 	Tangents.Empty();
 }
 
-void Mesh::Translate(const FVector& offset)
+void Mesh::Transform(const FTransform& transform)
 {
-	for (auto& vertex : Vertices)
-		vertex += offset;
-}
-
-void Mesh::Rotate(const FVector& rotationDegrees)
-{
-	for (auto& vertex : Vertices)
-	{
-		const FRotator rotator(rotationDegrees.X, rotationDegrees.Y, rotationDegrees.Z);
-		vertex = rotator.RotateVector(vertex);
-	}
+    for (auto& vertex : Vertices)
+    {
+        vertex = transform.TransformPosition(vertex);
+    }
 }
 
 void CubeMesh(Mesh& mesh, const FVector& size)
