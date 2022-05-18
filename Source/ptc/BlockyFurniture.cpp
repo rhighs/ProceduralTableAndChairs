@@ -86,11 +86,11 @@ void BlockyTable(Mesh& mesh, const FVector& size)
 	CubeMesh(mesh, legsSize, FVector(- halfLegX + halfTopX, - halfLegY + halfTopY, legsSize.Z / 2));
 }
 
-TArray<TTuple<FVector, FVector>> ChairPositions(const FVector& tableSize, const FVector& chairSize)
+TArray<FTransform> ChairPositions(const FVector& tableSize, const FVector& chairSize)
 {
-	TArray<TTuple<FVector, FVector>> positions;
+	TArray<FTransform> transforms;
 	int32 initialAllocation = ((tableSize.X / chairSize.X) / 2 + (tableSize.Y / chairSize.Y) / 2) * 2;
-	positions.Reserve(initialAllocation);
+	transforms.Reserve(initialAllocation);
 
 	const float gapBetweenChairs = 30.0f;
 
@@ -100,15 +100,15 @@ TArray<TTuple<FVector, FVector>> ChairPositions(const FVector& tableSize, const 
 	const float distanceFromTableX = (gapBetweenChairs + chairSize.X / 2) * 2;
 	const float distanceFromTableY = (gapBetweenChairs + chairSize.X / 2) * 2;
 	const float chairsSideX = tableSideX + distanceFromTableX;
-	const float chairsSideY = tableSideY + distanceFromTableY;
-
+    const float chairsSideY = tableSideY + distanceFromTableY;
+	
 	for (float x = -tableSideX; x < tableSideX; x += chairSize.X + gapBetweenChairs)
 	{
 		auto v1 = FVector(x, chairsSideY, 0.0f);
 		auto v2 = FVector(x, -chairsSideY, 0.0f);
 
-		positions.Add(MakeTuple(v1, FVector(0.0, 180.0, 0.0)));
-		positions.Add(MakeTuple(v2, FVector::ZeroVector));
+        transforms.Add(FTransform(FRotator(0.0, 180.0, 0.0).Quaternion(), v1));
+        transforms.Add(FTransform(FRotator(0.0, 0.0, 0.0).Quaternion(), v2));
 	}
 
 	for (float y = -tableSideY; y < tableSideY; y += chairSize.X + gapBetweenChairs)
@@ -116,9 +116,9 @@ TArray<TTuple<FVector, FVector>> ChairPositions(const FVector& tableSize, const 
 		auto v1 = FVector(chairsSideX, y, 0.0f);
 		auto v2 = FVector(-chairsSideX, y, 0.0f);
 
-		positions.Add(MakeTuple(v1, FVector(0.0, 90.0, 0.0)));
-		positions.Add(MakeTuple(v2, FVector(0.0, 270.0, 0.0)));
+        transforms.Add(FTransform(FRotator(0.0, 90.0, 0.0).Quaternion(), v1));
+        transforms.Add(FTransform(FRotator(0.0, 270.0, 0.0).Quaternion(), v2));
 	}
 
-	return positions;
+    return transforms;
 }

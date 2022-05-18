@@ -21,6 +21,6 @@ void BlockyTable(Mesh& mesh, const FVector& size);
 /** Greedely generate spawn locations for chairs around a rectangluar table
 * \param tableSize the table size
 * \param chairSize the chairs size
-* \return a position and the rotation vector in deg for each chair
+* \return a transformation for each chair
 */
-TArray<TTuple<FVector, FVector>> ChairPositions(const FVector& tableSize, const FVector& chairSize);
+TArray<FTransform> ChairPositions(const FVector& tableSize, const FVector& chairSize);
