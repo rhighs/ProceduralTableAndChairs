@@ -2,18 +2,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
+#include "Components/SphereComponent.h"
 #include "PTCComponent.h"
-
+#include "Resizable.h"
 #include "TableAndChairs.generated.h"
 
 
 UCLASS()
-class PTC_API ATableAndChairs : public AActor
+class PTC_API ATableAndChairs : public AActor, public IResizable
 {
 	GENERATED_BODY()
 
     UPTCComponent* _proceduralTableAndChairs;
+
+    UPROPERTY(VisibleAnywhere, Category = "Collision")
+    TArray<USphereComponent*> _cornerSphereComponents;
 
     bool _firstRender = true;
 	
@@ -40,6 +43,8 @@ public:
 
     void Update();
 
+    virtual FVector GetResizableLocation() override;
+    virtual void Resize(const FVector& newSize) override;
 protected:
 	virtual void BeginPlay() override;
     virtual void OnConstruction(const FTransform& transform) override;
@@ -48,6 +53,8 @@ protected:
     virtual void PostEditChangeProperty(FPropertyChangedEvent& event) override;
 #endif
 
+private:
+    void _putCornerHitboxesInPlace();
 public:
 	virtual void Tick(float DeltaTime) override;
 };

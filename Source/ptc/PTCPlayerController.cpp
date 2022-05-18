@@ -40,8 +40,14 @@ void APTCPlayerController::PlayerTick(float DeltaTime)
 	FVector2D cursorCoordInZPlane = _whereLineIntersectsZPlane(zPlane, location, direction);
 	if (_resizableActor != nullptr)
 	{
-		FVector cursorWorldPosition = FVector(cursorCoordInZPlane, zPlane);
-		_resizableActor->Resize(_hitComponent, cursorWorldPosition);
+		auto tableLocation = _resizableActor->GetResizableLocation();
+		FVector2D newSize = 2 * (cursorCoordInZPlane - FVector2D(tableLocation.X, tableLocation.Y)).GetAbs();
+		//auto currentSize = FVector2D(_resizableActor->GetSize().X, _resizableActor->GetSize().Y);
+		//auto sizeDiff = newSize - currentSize;
+		_resizableActor->Resize(FVector(newSize, _resizableActor->GetSize().Z));
+
+		//FVector cursorWorldPosition = FVector(cursorCoordInZPlane, zPlane);
+		//_resizableActor->Resize(_hitComponent, cursorWorldPosition);
 	}
 
 }
@@ -71,7 +77,7 @@ void APTCPlayerController::_onMoveCameraReleased()
 
 /// <summary>
 /// Handles click on entities inside the viewport
-/// Note: current max distance for clickable entities is 1000
+/// Note: current max distance for clickable entities is 55000
 /// </summary>
 void APTCPlayerController::_mouseLeftButtonPressed()
 {
@@ -79,7 +85,7 @@ void APTCPlayerController::_mouseLeftButtonPressed()
 	FVector direction;
 	FHitResult hitResult;
 
-	float distance = 1000;
+	float distance = 55000;
 	DeprojectMousePositionToWorld(location, direction);
 	FCollisionQueryParams queryParams(FName(TEXT("CornerTrace")), false, nullptr);
 	bool hit = GetWorld()->LineTraceSingleByChannel(hitResult, location, (location + distance * direction), ECC_Visibility, queryParams);
