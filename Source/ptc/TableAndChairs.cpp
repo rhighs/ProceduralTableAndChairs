@@ -24,7 +24,7 @@ void ATableAndChairs::OnConstruction(const FTransform& transform)
     if (_firstRender)
     {
         _firstRender = false;
-        _proceduralTableAndChairs->Update(
+        _proceduralTableAndChairs->Build(
             FVector(TableWidth, TableLength, TableHeight),
             FVector(ChairWidth, ChairLength, ChairHeight)
         );

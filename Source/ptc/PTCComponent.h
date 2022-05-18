@@ -20,7 +20,14 @@ class PTC_API UPTCComponent : public UProceduralMeshComponent
     FVector _lastTableSize;
 
     int32 _tableMeshSectionId = 0;
-    int32 _lastChairMeshSectionId = 0;
+    int32 _lastChairMeshSectionId = 1;
+    int32 _maxReachedMeshSectionId = _maxReachedMeshSectionId;
+
+    bool _firstRender = true;
+
+    void _renderTable(const Mesh& tableMesh);
+    void _renderChair(const Mesh& chairMesh);
+    void _clearRemainingSections(int32 startingFromId);
 
 public:
     UPTCComponent(const FObjectInitializer& objectInitializer);
