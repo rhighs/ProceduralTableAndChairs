@@ -1,7 +1,8 @@
 *.code-workspace
 .vscode/
-Content
+#Content
 Intermediate
+Source/ptc/TempActor.*
 
 # Visual Studio 2015 user specific files
 .vs/

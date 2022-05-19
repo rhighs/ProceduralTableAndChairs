@@ -13,5 +13,11 @@
 				"ProceduralMeshComponent"
 			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "SunPosition",
+			"Enabled": true
+		}
 	]
 }
