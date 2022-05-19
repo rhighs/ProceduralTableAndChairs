@@ -116,7 +116,14 @@ void CubeMesh(Mesh& mesh, const FVector& size, const FVector& vertexOffset)
 	const float OffsetY = size.Y / 2.0f;
 	const float OffsetZ = size.Z / 2.0f;
 
-	// Define the 8 corners of the cube
+	/*
+			2------3
+		   /|	  /|
+		  6------7 |
+		  | 1----|-0
+		  |/	 |/
+		  5------4
+	*/
 	const FVector p0 = FVector(OffsetX,  OffsetY, -OffsetZ) + vertexOffset;
 	const FVector p1 = FVector(OffsetX, -OffsetY, -OffsetZ) + vertexOffset;
 	const FVector p2 = FVector(OffsetX, -OffsetY,  OffsetZ) + vertexOffset;
@@ -127,12 +134,12 @@ void CubeMesh(Mesh& mesh, const FVector& size, const FVector& vertexOffset)
 	const FVector p7 = FVector(-OffsetX, OffsetY, OffsetZ) + vertexOffset;
 
 	// Add each face given their vertices, normals and tangents
-	AddRectangleTo(mesh, p0, p1, p2, p3, FVector::RightVector, FProcMeshTangent(FVector::ForwardVector, false));
-	AddRectangleTo(mesh, p5, p4, p7, p6, FVector::LeftVector, FProcMeshTangent(FVector::ForwardVector, false));
-	AddRectangleTo(mesh, p1, p5, p6, p2, FVector::ForwardVector, FProcMeshTangent(FVector::RightVector, false));
-	AddRectangleTo(mesh, p4, p0, p3, p7, FVector::BackwardVector, FProcMeshTangent(FVector::RightVector, false));
-	AddRectangleTo(mesh, p6, p7, p3, p2, FVector::UpVector, FProcMeshTangent(FVector::RightVector, false));
-	AddRectangleTo(mesh, p1, p0, p4, p5, FVector::DownVector, FProcMeshTangent(FVector::RightVector, false));
+	AddRectangleTo(mesh, p0, p1, p2, p3, FVector::ForwardVector, FProcMeshTangent(FVector::RightVector, false));
+	AddRectangleTo(mesh, p5, p4, p7, p6, FVector::BackwardVector, FProcMeshTangent(FVector::LeftVector, false));
+	AddRectangleTo(mesh, p1, p5, p6, p2, FVector::LeftVector, FProcMeshTangent(FVector::BackwardVector, false));
+	AddRectangleTo(mesh, p4, p0, p3, p7, FVector::RightVector, FProcMeshTangent(FVector::ForwardVector, false));
+	AddRectangleTo(mesh, p6, p7, p3, p2, FVector::UpVector, FProcMeshTangent(FVector::ForwardVector, false));
+	AddRectangleTo(mesh, p1, p0, p4, p5, FVector::DownVector, FProcMeshTangent(FVector::BackwardVector, false));
 }
 
 void AddRectangleTo(Mesh& mesh,

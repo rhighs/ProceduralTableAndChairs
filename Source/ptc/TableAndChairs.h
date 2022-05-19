@@ -13,6 +13,7 @@ class PTC_API ATableAndChairs : public AActor, public IResizable
 {
 	GENERATED_BODY()
 
+    UPROPERTY(VisibleAnywhere, Category="Mesh")
     UPTCComponent* _proceduralTableAndChairs;
 
     UPROPERTY(VisibleAnywhere, Category = "Collision")
