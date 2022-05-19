@@ -2,6 +2,7 @@
 
 ATableAndChairs::ATableAndChairs()
 {
+    SetActorTickInterval(1);
     SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -54,8 +55,7 @@ void ATableAndChairs::PostEditChangeProperty(FPropertyChangedEvent& event)
 
     if (anyPropChanged)
     {
-        Update();
-        _putCornerHitboxesInPlace();
+        _markedForUpdate = true;
     }
 
     Super::PostEditChangeProperty(event);
@@ -69,6 +69,7 @@ void ATableAndChairs::Update()
         FVector(TableWidth, TableLength, TableHeight),
         FVector(ChairWidth, ChairLength, ChairHeight)
     );
+    _putCornerHitboxesInPlace();
 }
 
 void ATableAndChairs::Resize(const FString& targetComponent, const FVector& cursorPosition)
@@ -121,7 +122,18 @@ void ATableAndChairs::_putCornerHitboxesInPlace()
     }
 }
 
+bool ATableAndChairs::ShouldTickIfViewportsOnly() const
+{
+    return true;
+}
+
 void ATableAndChairs::Tick(float DeltaTime)
 {
+    if (_markedForUpdate)
+    {
+        Update();
+        _markedForUpdate = false;
+    }
+
 	Super::Tick(DeltaTime);
 }

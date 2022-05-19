@@ -19,6 +19,7 @@ class PTC_API ATableAndChairs : public AActor, public IResizable
     TArray<UBoxComponent*> _cornerBoxComponents;
 
     bool _firstRender = true;
+    bool _markedForUpdate = false;
 	
 public:	
 	ATableAndChairs();
@@ -47,6 +48,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
     virtual void OnConstruction(const FTransform& transform) override;
+    virtual bool ShouldTickIfViewportsOnly() const override;
 
 #if WITH_EDITOR
     virtual void PostEditChangeProperty(FPropertyChangedEvent& event) override;
